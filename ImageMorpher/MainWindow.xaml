@@ -1,0 +1,16 @@
+﻿<Window x:Class="ImageMorpher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageMorpher"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button Content="Upload Image" HorizontalAlignment="Center" VerticalAlignment="Top" Width="95" Click="SelectSourceButton_Click" Margin="350,340,347,0"/>
+        <Grid HorizontalAlignment="Center" Height="180" VerticalAlignment="Center" Width="145" Background="#FFC7C7C7">
+            <Image Name="sourceImage" HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="145"/>
+            <Canvas Name="sourceCanvas" HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="145" MouseDown="SourceCanvas_MouseDown" Background="#00000000"/>
+        </Grid>
+    </Grid>
+</Window>
