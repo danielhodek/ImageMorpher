@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using ExtensionMethods;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,7 +15,6 @@ namespace ImageMorpher
     /// </summary>
     public partial class MainWindow : Window
     {
-        private OpenFileDialog openFileDialog;
         private List<Line> controlLines;
         private Point startPoint;
         private Point endPoint;
@@ -25,12 +24,12 @@ namespace ImageMorpher
         {
             InitializeComponent();
 
-            openFileDialog = new OpenFileDialog();
             isStartPoint = true;
         }
 
         private void SelectSourceButton_Click(object sender, RoutedEventArgs e)
         {
+            var openFileDialog = new OpenFileDialog();
             if ((bool)openFileDialog.ShowDialog())
             {
                 try
@@ -56,8 +55,18 @@ namespace ImageMorpher
             else
             {
                 endPoint = Mouse.GetPosition(sourceCanvas);
-                sourceCanvas.DrawLine(Brushes.Red, 2, )
+                sourceCanvas.DrawLine(Brushes.Red, 2, startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
             }
+        }
+
+        private void sourceButton_Click(object sender, RoutedEventArgs e)
+        {
+            sourceImage.SetImage()
+        }
+
+        private void destButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
