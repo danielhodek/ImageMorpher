@@ -55,7 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ImageContainer.xaml">
+    <Page Include="ControlLineCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -67,10 +67,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="ImageContainer.xaml.cs">
-      <DependentUpon>ImageContainer.xaml</DependentUpon>
+    <Compile Include="ControlLine.cs" />
+    <Compile Include="ControlLineCanvas.xaml.cs">
+      <DependentUpon>ControlLineCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageUtility.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

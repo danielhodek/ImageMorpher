@@ -1,72 +1,46 @@
-﻿using ExtensionMethods;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace ImageMorpher
 {
-    /// <summary>
+    /// <summary>4
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Line> controlLines;
-        private Point startPoint;
-        private Point endPoint;
-        private bool isStartPoint;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            isStartPoint = true;
+            source.PreviewMouseLeftButtonUp += Source_PreviewMouseLeftButtonUp;
+            dest.PreviewMouseLeftButtonUp += Dest_PreviewMouseLeftButtonUp;
         }
 
-        private void SelectSourceButton_Click(object sender, RoutedEventArgs e)
+        private void Source_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog();
-            if ((bool)openFileDialog.ShowDialog())
+            if (source.IsDrawing)
             {
-                try
-                {
-                    string fileName = openFileDialog.FileName;
-                    sourceImage.Source = new BitmapImage(new Uri(fileName));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
+                source.IsDrawing = false;
+                dest.AddControlLine(source.ControlLines[source.ControlLines.Count - 1]);
             }
         }
 
-        private void SourceCanvas_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Dest_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Console.WriteLine("Clicked");
-            if (isStartPoint)
+            if (dest.IsDrawing)
             {
-                startPoint = Mouse.GetPosition(sourceCanvas);
-                isStartPoint = false;
-            }
-            else
-            {
-                endPoint = Mouse.GetPosition(sourceCanvas);
-                sourceCanvas.DrawLine(Brushes.Red, 2, startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
+                dest.IsDrawing = false;
+                source.AddControlLine(dest.ControlLines[dest.ControlLines.Count - 1]);
             }
         }
 
         private void sourceButton_Click(object sender, RoutedEventArgs e)
         {
-            sourceImage.SetImage()
+            source.SetImage();
+            destButton.IsEnabled = true;
         }
 
         private void destButton_Click(object sender, RoutedEventArgs e)
         {
-
+            dest.SetImage(source.image.Source.Width, source.image.Source.Height);
         }
     }
 }

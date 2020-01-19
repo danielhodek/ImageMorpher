@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ImageMorpher"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800">
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
@@ -16,10 +16,10 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button Name="sourceButton" Content="Select Source" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto"/>
-        <Button Name="destButton" Content="Select Destination" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto"/>
-        <local:ImageContainer Name="sourceImage" Grid.Row="0" Grid.Column="0" Width="225" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <local:ImageContainer Name="destImage" Grid.Row="0" Grid.Column="1" Width="225" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="sourceButton" Content="Select Source" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="sourceButton_Click"/>
+        <Button x:Name="destButton" Content="Select Destination" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="destButton_Click" IsEnabled="False"/>
+        <local:ControlLineCanvas x:Name="source" VerticalAlignment="Center"/>
+        <local:ControlLineCanvas x:Name="dest" Grid.Column="1" VerticalAlignment="Center"/>
         <Grid Grid.Row="0" Grid.Column="2" Width="225" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Name="resultImage"/>
         </Grid>
