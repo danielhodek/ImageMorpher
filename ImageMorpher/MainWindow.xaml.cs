@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace ImageMorpher
 {
@@ -41,6 +42,13 @@ namespace ImageMorpher
         private void destButton_Click(object sender, RoutedEventArgs e)
         {
             dest.SetImage(source.image.Source.Width, source.image.Source.Height);
+            morphButton.IsEnabled = true;
+        }
+
+        private void morphButton_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("source image width=" + source.PixelWidth);
+            Console.WriteLine("source image height=" + source.PixelHeight);
         }
     }
 }

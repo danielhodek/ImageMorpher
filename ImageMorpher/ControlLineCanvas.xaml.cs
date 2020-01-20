@@ -13,6 +13,8 @@ namespace ImageMorpher
     {
         public List<ControlLine> ControlLines { get; private set; } = new List<ControlLine>();
         public bool IsDrawing { get; set; } = false;
+        public double PixelWidth { get; private set; }
+        public double PixelHeight { get; private set; }
 
         public ControlLineCanvas()
         {
@@ -37,6 +39,8 @@ namespace ImageMorpher
         public void SetImage()
         {
             BitmapImage bitmap = ImageUtility.OpenImage();
+            PixelWidth = bitmap.PixelWidth;
+            PixelHeight = bitmap.PixelHeight;
             image.Source = bitmap;
         }
 

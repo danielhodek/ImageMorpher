@@ -43,6 +43,7 @@ namespace ImageMorpher
             End = new ControlLineEndThumb(this, endPos.X, endPos.Y);
             Vector v = Point.Subtract(startPos, endPos);
             Mid = new ControlLineMidThumb(this, endPos.X + v.X / 2, endPos.Y + v.Y / 2);
+            Canvas.SetZIndex(End, 2);
 
             Line = new LineGeometry();
             Path path = new Path();
