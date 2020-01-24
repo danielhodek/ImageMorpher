@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Point = System.Windows.Point;
 
 namespace ImageMorpher
 {
@@ -13,8 +15,7 @@ namespace ImageMorpher
     {
         public List<ControlLine> ControlLines { get; private set; } = new List<ControlLine>();
         public bool IsDrawing { get; set; } = false;
-        public double PixelWidth { get; private set; }
-        public double PixelHeight { get; private set; }
+        public BitmapImage BitmapImage { get; set; }
 
         public ControlLineCanvas()
         {
@@ -38,17 +39,21 @@ namespace ImageMorpher
 
         public void SetImage()
         {
-            BitmapImage bitmap = ImageUtility.OpenImage();
-            PixelWidth = bitmap.PixelWidth;
-            PixelHeight = bitmap.PixelHeight;
-            image.Source = bitmap;
+            BitmapImage bitmapImage = ImageUtil.OpenImage();
+            if (bitmapImage == null)
+                return;
+            image.Source = bitmapImage;
         }
 
-        public void SetImage(double width, double height)
+        public void SetImage(int width, int height)
         {
-            BitmapImage bitmap = ImageUtility.OpenImage();
-            TransformedBitmap transformedBitmap = ImageUtility.Resize(bitmap, width, height);
-            image.Source = transformedBitmap;
+            BitmapImage bitmapImage = ImageUtil.OpenImage();
+            if (bitmapImage == null)
+                return;
+            Bitmap bitmap = ImageUtil.BitmapSourceToBitmap(bitmapImage);
+            Bitmap resizedBitmap = ImageUtil.ResizeImage(bitmap, width, height);
+            BitmapSource resizedBitmapSource = ImageUtil.BitmapToBitmapSource(resizedBitmap);
+            image.Source = resizedBitmapSource;
         }
 
         public void AddControlLine(ControlLine controlLine)

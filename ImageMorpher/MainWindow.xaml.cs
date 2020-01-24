@@ -1,5 +1,12 @@
-﻿using System;
+﻿using ImageMorpher.Classes;
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace ImageMorpher
 {
@@ -41,14 +48,19 @@ namespace ImageMorpher
 
         private void destButton_Click(object sender, RoutedEventArgs e)
         {
-            dest.SetImage(source.image.Source.Width, source.image.Source.Height);
+            dest.SetImage((int)source.image.Source.Width, (int)source.image.Source.Height);
             morphButton.IsEnabled = true;
         }
 
         private void morphButton_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("source image width=" + source.PixelWidth);
-            Console.WriteLine("source image height=" + source.PixelHeight);
+            Bitmap sourceBitmap = ImageUtil.BitmapSourceToBitmap((BitmapSource)source.image.Source);
+            Bitmap destBitmap = ImageUtil.BitmapSourceToBitmap((BitmapSource)dest.image.Source);
+            DirectBitmap resultBitmap = 
+
+            
+
+            result.Source = ImageUtil.BitmapToBitmapSource(resultBitmap);
         }
     }
 }

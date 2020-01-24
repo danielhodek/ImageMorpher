@@ -19,7 +19,7 @@
             </ControlTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid VerticalAlignment="Center">
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
         <Image x:Name="image"/>
         <Canvas x:Name="canvas" MouseLeftButtonDown="canvas_MouseLeftButtonDown" Background="Transparent"/>
     </Grid>
