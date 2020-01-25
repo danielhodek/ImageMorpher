@@ -1,19 +1,16 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Color = System.Windows.Media.Color;
 using System.Drawing.Drawing2D;
 
 namespace ImageMorpher
 {
-    class ImageUtil
+    class ImageUtility
     {
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
@@ -37,18 +34,7 @@ namespace ImageMorpher
             return null;
         }
 
-        public static WriteableBitmap CreateBitmap(int pixelWidth, int pixelHeight)
-        {
-            List<Color> colors = new List<Color>();
-            colors.Add(Colors.Red);
-            colors.Add(Colors.Blue);
-            colors.Add(Colors.Green);
-            BitmapPalette palette = new BitmapPalette(colors);
-            WriteableBitmap bitmap = new WriteableBitmap(pixelWidth, pixelHeight, 96, 96, PixelFormats.Rgb24, palette);
-            return bitmap; 
-        }
-
-        public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapSource)
+        public static Bitmap SourceToBitmap(BitmapSource bitmapSource)
         {
             using (MemoryStream outStream = new MemoryStream())
             {
@@ -61,7 +47,7 @@ namespace ImageMorpher
             }
         }
 
-        public static BitmapSource BitmapToBitmapSource(Bitmap bitmap)
+        public static BitmapSource BitmapToSource(Bitmap bitmap)
         {
             IntPtr hBitmap = bitmap.GetHbitmap();
             BitmapSource image;

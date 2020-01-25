@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace ImageMorpher.Classes
+namespace ImageMorpher
 {
     class DirectBitmap : IDisposable
     {
@@ -19,9 +19,36 @@ namespace ImageMorpher.Classes
         {
             Width = width;
             Height = height;
-            Bits = new Int32[width * height];
+            Bits = new int[width * height];
             BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-            Bitmap = new Bitmap(width, height, width * 3, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+            Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+        }
+
+        public DirectBitmap(Bitmap bitmap)
+        {
+            Width = bitmap.Width;
+            Height = bitmap.Height;
+            Bits = new int[Width * Height];
+            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
+            Bitmap = new Bitmap(Width, Height, Width * 4, PixelFormat.Format32bppArgb, BitsHandle.AddrOfPinnedObject());
+            Rectangle rect = new Rectangle(0, 0, Width, Height);
+            Console.WriteLine(bitmap.PixelFormat);
+            BitmapData data = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            unsafe
+            {
+                int* pos = (int*)data.Scan0;
+                for (int i = 0; i < data.Height; i++)
+                {
+                    for (int j = 0; j < data.Width; j++)
+                    {
+                        Color color = Color.FromArgb(*pos++);
+                        SetPixel(j, i, color);
+                    }
+                }
+            }
+
+            bitmap.UnlockBits(data);
         }
 
         public void SetPixel(int x, int y, Color color)

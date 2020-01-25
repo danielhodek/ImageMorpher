@@ -39,7 +39,7 @@ namespace ImageMorpher
 
         public void SetImage()
         {
-            BitmapImage bitmapImage = ImageUtil.OpenImage();
+            BitmapImage bitmapImage = ImageUtility.OpenImage();
             if (bitmapImage == null)
                 return;
             image.Source = bitmapImage;
@@ -47,12 +47,12 @@ namespace ImageMorpher
 
         public void SetImage(int width, int height)
         {
-            BitmapImage bitmapImage = ImageUtil.OpenImage();
+            BitmapImage bitmapImage = ImageUtility.OpenImage();
             if (bitmapImage == null)
                 return;
-            Bitmap bitmap = ImageUtil.BitmapSourceToBitmap(bitmapImage);
-            Bitmap resizedBitmap = ImageUtil.ResizeImage(bitmap, width, height);
-            BitmapSource resizedBitmapSource = ImageUtil.BitmapToBitmapSource(resizedBitmap);
+            Bitmap bitmap = ImageUtility.SourceToBitmap(bitmapImage);
+            Bitmap resizedBitmap = ImageUtility.ResizeImage(bitmap, width, height);
+            BitmapSource resizedBitmapSource = ImageUtility.BitmapToSource(resizedBitmap);
             image.Source = resizedBitmapSource;
         }
 

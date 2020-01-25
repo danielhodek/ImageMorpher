@@ -1,12 +1,7 @@
-﻿using ImageMorpher.Classes;
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using Color = System.Drawing.Color;
 
 namespace ImageMorpher
 {
@@ -54,13 +49,16 @@ namespace ImageMorpher
 
         private void morphButton_Click(object sender, RoutedEventArgs e)
         {
-            Bitmap sourceBitmap = ImageUtil.BitmapSourceToBitmap((BitmapSource)source.image.Source);
-            Bitmap destBitmap = ImageUtil.BitmapSourceToBitmap((BitmapSource)dest.image.Source);
-            DirectBitmap resultBitmap = 
+            Bitmap sourceBitmap = ImageUtility.SourceToBitmap((BitmapSource)source.image.Source);
+            Bitmap destBitmap = ImageUtility.SourceToBitmap((BitmapSource)dest.image.Source);
 
-            
+            DirectBitmap sourceBmp = new DirectBitmap(sourceBitmap);
+            DirectBitmap destBmp = new DirectBitmap(destBitmap);
+            DirectBitmap resultBmp = new DirectBitmap(sourceBitmap);
 
-            result.Source = ImageUtil.BitmapToBitmapSource(resultBitmap);
+            BitmapSource resultBitmapSource = ImageUtility.BitmapToSource(resultBmp.Bitmap);
+
+            result.Source = resultBitmapSource;
         }
     }
 }
