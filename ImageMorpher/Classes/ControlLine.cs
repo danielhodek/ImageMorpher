@@ -38,7 +38,6 @@ namespace ImageMorpher
             ControlLineCanvas = controlLineCanvas;
 
             Point startPos = controlLine.Start.GetPos();
-            Point midPos = controlLine.Mid.GetPos();
             Point endPos = controlLine.End.GetPos();
 
             Start = new ControlLineStartThumb(this, startPos.X, startPos.Y);
@@ -105,8 +104,8 @@ namespace ImageMorpher
             Point pos = GetPos();
             double canvasWidth = ControlLine.ControlLineCanvas.ActualWidth;
             double canvasHeight = ControlLine.ControlLineCanvas.ActualHeight;
-            double pixelWidth = ControlLine.ControlLineCanvas.BitmapImage.PixelWidth;
-            double pixelHeight = ControlLine.ControlLineCanvas.BitmapImage.PixelHeight;
+            double pixelWidth = ControlLine.ControlLineCanvas.DirectBitmap.Width;
+            double pixelHeight = ControlLine.ControlLineCanvas.DirectBitmap.Height;
 
             return new Point(pos.X * (canvasWidth / pixelWidth), pos.Y * (canvasHeight / pixelHeight));
         }

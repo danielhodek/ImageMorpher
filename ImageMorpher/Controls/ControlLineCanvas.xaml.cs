@@ -8,14 +8,11 @@ using Point = System.Windows.Point;
 
 namespace ImageMorpher
 {
-    /// <summary>
-    /// Interaction logic for ControlLineCanvas.xaml
-    /// </summary>
     public partial class ControlLineCanvas : UserControl
     {
         public List<ControlLine> ControlLines { get; private set; } = new List<ControlLine>();
         public bool IsDrawing { get; set; } = false;
-        public BitmapImage BitmapImage { get; set; }
+        public DirectBitmap DirectBitmap { get; private set; }
 
         public ControlLineCanvas()
         {
@@ -42,7 +39,7 @@ namespace ImageMorpher
             BitmapImage bitmapImage = ImageUtility.OpenImage();
             if (bitmapImage == null)
                 return;
-            image.Source = bitmapImage;
+            InitBitmap(bitmapImage);
         }
 
         public void SetImage(int width, int height)
@@ -53,13 +50,30 @@ namespace ImageMorpher
             Bitmap bitmap = ImageUtility.SourceToBitmap(bitmapImage);
             Bitmap resizedBitmap = ImageUtility.ResizeImage(bitmap, width, height);
             BitmapSource resizedBitmapSource = ImageUtility.BitmapToSource(resizedBitmap);
-            image.Source = resizedBitmapSource;
+            InitBitmap(resizedBitmapSource);
+        }
+
+        public void SetPixel(int x, int y, Color color)
+        {
+            DirectBitmap.SetPixel(x, y, color);
+        }
+
+        public Color GetPixel(int x, int y)
+        {
+            return DirectBitmap.GetPixel(x, y);
         }
 
         public void AddControlLine(ControlLine controlLine)
         {
             var controlLineCopy = new ControlLine(this, controlLine);
             ControlLines.Add(controlLineCopy);
+        }
+
+        private void InitBitmap(BitmapSource bitmapSource)
+        {
+            image.Source = bitmapSource;
+            Bitmap bitmap = ImageUtility.SourceToBitmap((BitmapSource)image.Source);
+            DirectBitmap = new DirectBitmap(bitmap);
         }
     }
 }

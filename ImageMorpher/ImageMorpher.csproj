@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Classes\ControlLine.cs" />
     <Compile Include="Classes\DirectBitmap.cs" />
+    <Compile Include="Classes\Morph.cs" />
     <Compile Include="Controls\ControlLineCanvas.xaml.cs">
       <DependentUpon>ControlLineCanvas.xaml</DependentUpon>
     </Compile>

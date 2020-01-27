@@ -1,18 +1,14 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
-using Color = System.Drawing.Color;
 
 namespace ImageMorpher
 {
-    /// <summary>4
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
             source.PreviewMouseLeftButtonUp += Source_PreviewMouseLeftButtonUp;
             dest.PreviewMouseLeftButtonUp += Dest_PreviewMouseLeftButtonUp;
         }
@@ -43,21 +39,18 @@ namespace ImageMorpher
 
         private void destButton_Click(object sender, RoutedEventArgs e)
         {
-            dest.SetImage((int)source.image.Source.Width, (int)source.image.Source.Height);
+            dest.SetImage();
+            //dest.SetImage((int)source.image.Source.Width, (int)source.image.Source.Height);
             morphButton.IsEnabled = true;
         }
 
         private void morphButton_Click(object sender, RoutedEventArgs e)
         {
-            Bitmap sourceBitmap = ImageUtility.SourceToBitmap((BitmapSource)source.image.Source);
-            Bitmap destBitmap = ImageUtility.SourceToBitmap((BitmapSource)dest.image.Source);
+            DirectBitmap resultBitmap = new DirectBitmap(source.DirectBitmap.Width, source.DirectBitmap.Height);
 
-            DirectBitmap sourceBmp = new DirectBitmap(sourceBitmap);
-            DirectBitmap destBmp = new DirectBitmap(destBitmap);
-            DirectBitmap resultBmp = new DirectBitmap(sourceBitmap);
+            Morph.Apply(source, dest, resultBitmap);
 
-            BitmapSource resultBitmapSource = ImageUtility.BitmapToSource(resultBmp.Bitmap);
-
+            BitmapSource resultBitmapSource = ImageUtility.BitmapToSource(resultBitmap.Bitmap);
             result.Source = resultBitmapSource;
         }
     }
