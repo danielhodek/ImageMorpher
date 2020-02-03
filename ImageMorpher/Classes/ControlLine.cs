@@ -14,6 +14,12 @@ namespace ImageMorpher
         public ControlLineMidThumb Mid { get; private set; }
         public ControlLineEndThumb End { get; private set; }
         public LineGeometry Line { get; private set; }
+        public Path Path { get; private set; }
+        public int Index 
+        {
+            get { return ControlLineCanvas.ControlLines.IndexOf(this); }
+            private set { Index = value; }
+        }
         public Point StartPoint { get; set; }
         public Point EndPoint { get; set; }
 
@@ -26,15 +32,15 @@ namespace ImageMorpher
             End = new ControlLineEndThumb(this, x, y);
 
             Line = new LineGeometry();
-            Path path = new Path();
-            path.Stroke = Brushes.Red;
-            path.StrokeThickness = 1;
-            path.Data = Line;
-            ControlLineCanvas.canvas.Children.Add(path);
+            Path = new Path();
+            Path.Stroke = Brushes.Red;
+            Path.StrokeThickness = 1;
+            Path.Data = Line;
+            ControlLineCanvas.canvas.Children.Add(Path);
         }
 
         public ControlLine(ControlLineCanvas controlLineCanvas, ControlLine controlLine)
-        {
+        { 
             ControlLineCanvas = controlLineCanvas;
 
             Point startPos = controlLine.Start.GetPos();
@@ -47,11 +53,11 @@ namespace ImageMorpher
             Canvas.SetZIndex(End, 2);
 
             Line = new LineGeometry();
-            Path path = new Path();
-            path.Stroke = Brushes.Red;
-            path.StrokeThickness = 1;
-            path.Data = Line;
-            ControlLineCanvas.canvas.Children.Add(path);
+            Path = new Path();
+            Path.Stroke = Brushes.Red;
+            Path.StrokeThickness = 1;
+            Path.Data = Line;
+            ControlLineCanvas.canvas.Children.Add(Path);
             UpdateLine();
         }
 

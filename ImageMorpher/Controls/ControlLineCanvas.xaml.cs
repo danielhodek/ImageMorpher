@@ -30,11 +30,6 @@ namespace ImageMorpher
             controlLine.End.RaiseEvent(e);
         }
 
-        public void Add(UIElement element)
-        {
-            canvas.Children.Add(element);
-        }
-
         public void SetImage()
         {
             BitmapImage bitmapImage = ImageUtility.OpenImage();
@@ -59,10 +54,27 @@ namespace ImageMorpher
             image.Source = DirectBitmap.BitmapSource;
         }
 
-        public void AddControlLine(ControlLine controlLine)
+        public void Add(UIElement element)
         {
-            var controlLineCopy = new ControlLine(this, controlLine);
-            ControlLines.Add(controlLineCopy);
+            canvas.Children.Add(element);
+        }
+
+        public void RemoveAt(int index)
+        {
+            var cl = ControlLines[index];
+            canvas.Children.Remove(cl.Path);
+            canvas.Children.Remove(cl.Start);
+            canvas.Children.Remove(cl.End);
+            canvas.Children.Remove(cl.Mid);
+            ControlLines.Remove(cl);
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < ControlLines.Count; i++)
+            {
+                RemoveAt(0);
+            }
         }
     }
 }

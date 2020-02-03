@@ -12,7 +12,7 @@ namespace ImageMorpher
         public BitmapSource BitmapSource
         {
             get { return ImageUtility.BitmapToSource(Bitmap); }
-            set { BitmapSource = value; } 
+            private set { BitmapSource = value; } 
         }
         public int[] Bits { get; private set; }
         public bool Disposed { get; private set; }

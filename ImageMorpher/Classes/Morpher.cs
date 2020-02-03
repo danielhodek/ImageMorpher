@@ -125,6 +125,16 @@ namespace ImageMorpher
                         Point fp = new Point(p2.X + f * p2q2.X, p2.Y + f * p2q2.Y);
                         Point t2 = new Point(fp.X - n2.X * d, fp.Y - n2.Y * d);
 
+                        if (f < 0)
+                        {
+                            d = t1p1.Length;
+                        }
+                        else if (f > 1)
+                        {
+                            Vector t1q1 = t1 - q1;
+                            d = t1q1.Length;
+                        }
+
                         double w = Math.Pow(Math.Pow(p1q1.Length, p) / (a + Math.Abs(d)), b);
                         double deltaX = (t2.X - t1.X) * w;
                         double deltaY = (t2.Y - t1.Y) * w;
