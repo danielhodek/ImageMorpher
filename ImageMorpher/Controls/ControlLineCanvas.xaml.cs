@@ -13,6 +13,7 @@ namespace ImageMorpher
         public List<ControlLine> ControlLines { get; private set; } = new List<ControlLine>();
         public bool IsDrawing { get; set; } = false;
         public DirectBitmap DirectBitmap { get; private set; }
+        public BitmapSource BitmapSource { get { return (BitmapSource)image.Source; } }
 
         public ControlLineCanvas()
         {
@@ -39,7 +40,9 @@ namespace ImageMorpher
             BitmapImage bitmapImage = ImageUtility.OpenImage();
             if (bitmapImage == null)
                 return;
-            InitBitmap(bitmapImage);
+            image.Source = bitmapImage;
+            Bitmap bitmap = ImageUtility.SourceToBitmap(bitmapImage);
+            DirectBitmap = new DirectBitmap(bitmap);
         }
 
         public void SetImage(int width, int height)
@@ -48,32 +51,18 @@ namespace ImageMorpher
             if (bitmapImage == null)
                 return;
             Bitmap bitmap = ImageUtility.SourceToBitmap(bitmapImage);
-            Bitmap resizedBitmap = ImageUtility.ResizeImage(bitmap, width, height);
-            BitmapSource resizedBitmapSource = ImageUtility.BitmapToSource(resizedBitmap);
-            InitBitmap(resizedBitmapSource);
-        }
-
-        public void SetPixel(int x, int y, Color color)
-        {
-            DirectBitmap.SetPixel(x, y, color);
-        }
-
-        public Color GetPixel(int x, int y)
-        {
-            return DirectBitmap.GetPixel(x, y);
+            if (bitmap.Width != width || bitmap.Height != height)
+            {
+                bitmap = ImageUtility.ResizeImage(bitmap, width, height);
+            }
+            DirectBitmap = new DirectBitmap(bitmap);
+            image.Source = DirectBitmap.BitmapSource;
         }
 
         public void AddControlLine(ControlLine controlLine)
         {
             var controlLineCopy = new ControlLine(this, controlLine);
             ControlLines.Add(controlLineCopy);
-        }
-
-        private void InitBitmap(BitmapSource bitmapSource)
-        {
-            image.Source = bitmapSource;
-            Bitmap bitmap = ImageUtility.SourceToBitmap((BitmapSource)image.Source);
-            DirectBitmap = new DirectBitmap(bitmap);
         }
     }
 }

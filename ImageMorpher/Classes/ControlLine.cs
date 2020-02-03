@@ -27,7 +27,7 @@ namespace ImageMorpher
 
             Line = new LineGeometry();
             Path path = new Path();
-            path.Stroke = Brushes.Yellow;
+            path.Stroke = Brushes.Red;
             path.StrokeThickness = 1;
             path.Data = Line;
             ControlLineCanvas.canvas.Children.Add(path);
@@ -48,7 +48,7 @@ namespace ImageMorpher
 
             Line = new LineGeometry();
             Path path = new Path();
-            path.Stroke = Brushes.Yellow;
+            path.Stroke = Brushes.Red;
             path.StrokeThickness = 1;
             path.Data = Line;
             ControlLineCanvas.canvas.Children.Add(path);
@@ -65,6 +65,8 @@ namespace ImageMorpher
             double endY = endPos.Y + End.ActualHeight / 2;
             Line.StartPoint = new Point(startX, startY);
             Line.EndPoint = new Point(endX, endY);
+            StartPoint = Start.GetPixelPos();
+            EndPoint = End.GetPixelPos();
         }
     }
 
@@ -107,7 +109,7 @@ namespace ImageMorpher
             double pixelWidth = ControlLine.ControlLineCanvas.DirectBitmap.Width;
             double pixelHeight = ControlLine.ControlLineCanvas.DirectBitmap.Height;
 
-            return new Point(pos.X * (canvasWidth / pixelWidth), pos.Y * (canvasHeight / pixelHeight));
+            return new Point(pos.X * (pixelWidth / canvasWidth), pos.Y * (pixelHeight / canvasHeight));
         }
 
         public void SetPos(Point pos)
@@ -125,17 +127,11 @@ namespace ImageMorpher
             Template = template;
             ApplyTemplate();
             DragDelta += ControlLineStartThumb_DragDelta;
-            MouseLeftButtonUp += ControlLineStartThumb_MouseLeftButtonUp;
             controlLine.ControlLineCanvas.canvas.Children.Add(this);
             Canvas.SetLeft(this, x);
             Canvas.SetTop(this, y);
             Panel.SetZIndex(this, 1);
             UpdateLayout();
-        }
-
-        private void ControlLineStartThumb_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ControlLine.StartPoint = GetPixelPos();
         }
 
         private void ControlLineStartThumb_DragDelta(object sender, DragDeltaEventArgs e)
@@ -170,17 +166,11 @@ namespace ImageMorpher
             Template = template;
             ApplyTemplate();
             DragDelta += ControlLineEndThumb_DragDelta;
-            MouseLeftButtonUp += ControlLineEndThumb_MouseLeftButtonUp;
             controlLine.ControlLineCanvas.Add(this);
             Canvas.SetLeft(this, x);
             Canvas.SetTop(this, y);
             Panel.SetZIndex(this, 1);
             UpdateLayout();
-        }
-
-        private void ControlLineEndThumb_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ControlLine.EndPoint = GetPixelPos();
         }
 
         private void ControlLineEndThumb_DragDelta(object sender, DragDeltaEventArgs e)

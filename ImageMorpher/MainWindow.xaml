@@ -18,7 +18,16 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="sourceButton" Content="Select Source" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="sourceButton_Click"/>
         <Button x:Name="destButton" Content="Select Destination" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="destButton_Click" IsEnabled="False"/>
-        <Button x:Name="morphButton" Content="Morph" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="morphButton_Click" IsEnabled="False"/>
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <TextBox x:Name="aSetting" Text="0.01"/>
+            <TextBox x:Name="bSetting" Text="1"/>
+            <TextBox x:Name="pSetting" Text="0"/>
+            <TextBox x:Name="numFramesSetting" Text="9"/>
+            <Button x:Name="morphButton" Content="Morph" Click="morphButton_Click"/>
+            <Button x:Name="nextFrameButton" Content="Next Frame" Click="nextFrameButton_Click"/>
+            <Button x:Name="prevFrameButton" Content="Previous Frame" Click="prevFrameButton_Click"/>
+            <Button x:Name="animateButton" Content="Animate" Click="animateButton_Click"/>
+        </StackPanel>
         <local:ControlLineCanvas x:Name="source" VerticalAlignment="Center"/>
         <local:ControlLineCanvas x:Name="dest" Grid.Column="1" VerticalAlignment="Center"/>
         <Image Name="result" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>

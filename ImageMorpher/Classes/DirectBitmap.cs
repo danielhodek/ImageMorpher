@@ -2,12 +2,18 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Media.Imaging;
 
 namespace ImageMorpher
 {
     public class DirectBitmap : IDisposable
     {
         public Bitmap Bitmap { get; private set; }
+        public BitmapSource BitmapSource
+        {
+            get { return ImageUtility.BitmapToSource(Bitmap); }
+            set { BitmapSource = value; } 
+        }
         public int[] Bits { get; private set; }
         public bool Disposed { get; private set; }
         public int Width { get; private set; }

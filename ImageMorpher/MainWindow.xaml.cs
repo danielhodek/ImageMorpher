@@ -1,10 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace ImageMorpher
 {
     public partial class MainWindow : Window
     {
+        private List<BitmapSource> frames = new List<BitmapSource>();
+        private int frameIndex = 0;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -39,19 +44,53 @@ namespace ImageMorpher
 
         private void destButton_Click(object sender, RoutedEventArgs e)
         {
-            dest.SetImage();
-            //dest.SetImage((int)source.image.Source.Width, (int)source.image.Source.Height);
-            morphButton.IsEnabled = true;
+            dest.SetImage(source.BitmapSource.PixelWidth, source.BitmapSource.PixelHeight);
         }
 
         private void morphButton_Click(object sender, RoutedEventArgs e)
         {
+            frames.Clear();
+            frameIndex = 0;
             DirectBitmap resultBitmap = new DirectBitmap(source.DirectBitmap.Width, source.DirectBitmap.Height);
 
-            Morph.Apply(source, dest, resultBitmap);
+            double a = Convert.ToDouble(aSetting.Text);
+            double b = Convert.ToDouble(bSetting.Text);
+            double p = Convert.ToDouble(pSetting.Text);
+            int numFrames = Convert.ToInt32(numFramesSetting.Text);
 
-            BitmapSource resultBitmapSource = ImageUtility.BitmapToSource(resultBitmap.Bitmap);
-            result.Source = resultBitmapSource;
+            Morpher morpher = new Morpher(source, dest, numFrames, a, b, p);
+
+            var f = morpher.NextFrame();
+            if (f != null) result.Source = f;
+           
+            while (f != null)
+            {
+                frames.Add(f);
+                f = morpher.NextFrame();   
+            }
+        }
+
+        private void nextFrameButton_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(frameIndex);
+            if (frameIndex < frames.Count - 1)
+            {
+                result.Source = frames[++frameIndex];
+            }
+        }
+
+        private void prevFrameButton_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(frameIndex);
+            if (frameIndex > 0)
+            {
+                result.Source = frames[--frameIndex];
+            }
+        }
+
+        private void animateButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

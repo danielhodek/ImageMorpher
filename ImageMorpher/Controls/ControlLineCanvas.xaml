@@ -9,13 +9,13 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ControlTemplate x:Key="startTemplate">
-                <Ellipse Width="8" Height="8" Stroke="Yellow" Fill="Transparent"/>
+                <Ellipse Width="8" Height="8" Stroke="Transparent" Fill="Transparent"/>
             </ControlTemplate>
             <ControlTemplate x:Key="midTemplate">
-                <Ellipse Width="8" Height="8" Stroke="Yellow" Fill="Transparent"/>
+                <Ellipse Width="10" Height="8" Stroke="Transparent" Fill="Transparent"/>
             </ControlTemplate>
             <ControlTemplate x:Key="endTemplate">
-                <Ellipse Width="8" Height="8" Stroke="Red" Fill="Transparent"/>
+                <Ellipse Width="10" Height="10" Stroke="Red" Fill="Red"/>
             </ControlTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
