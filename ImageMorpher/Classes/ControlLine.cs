@@ -33,7 +33,7 @@ namespace ImageMorpher
 
             Line = new LineGeometry();
             Path = new Path();
-            Path.Stroke = Brushes.Red;
+            Path.Stroke = Brushes.LimeGreen;
             Path.StrokeThickness = 1;
             Path.Data = Line;
             ControlLineCanvas.canvas.Children.Add(Path);
@@ -54,7 +54,7 @@ namespace ImageMorpher
 
             Line = new LineGeometry();
             Path = new Path();
-            Path.Stroke = Brushes.Red;
+            Path.Stroke = Brushes.LimeGreen;
             Path.StrokeThickness = 1;
             Path.Data = Line;
             ControlLineCanvas.canvas.Children.Add(Path);

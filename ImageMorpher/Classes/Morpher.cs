@@ -18,7 +18,6 @@ namespace ImageMorpher
         private double a;
         private double b;
         private double p;
-        private int frameIndex = 0;
         private int width;
         private int height;
 
@@ -36,27 +35,25 @@ namespace ImageMorpher
             width = sourceCanvas.BitmapSource.PixelWidth;
             height = sourceCanvas.BitmapSource.PixelHeight;
         }
-        public BitmapSource NextFrame()
+        public BitmapSource GenerateFrame(int frameIndex)
         {
             if (frameIndex == 0)
             {
-                frameIndex++;
                 return source.BitmapSource;
             }
             else if (frameIndex == numFrames)
             {
-                frameIndex++;
                 return dest.BitmapSource;
             }
             else if (frameIndex > numFrames)
             {
-                frameIndex = 0;
                 return null;
             }
-            DirectBitmap forwardWarp = NextWarp(source, sourceLines, frameIndex);
-            DirectBitmap backwardWarp = NextWarp(dest, destLines, -(numFrames - frameIndex));
-            DirectBitmap crossDisolve = CrossDisolve(forwardWarp, backwardWarp);
-            ++frameIndex;
+
+            DirectBitmap forwardWarp = Warp(source, sourceLines, frameIndex);
+            DirectBitmap backwardWarp = Warp(dest, destLines, -(numFrames - frameIndex));
+            DirectBitmap crossDisolve = CrossDisolve(forwardWarp, backwardWarp, frameIndex);
+
             return crossDisolve.BitmapSource;
         }
 
@@ -84,7 +81,7 @@ namespace ImageMorpher
             return deltas;
         }
 
-        private DirectBitmap NextWarp(DirectBitmap bitmap, List<Tuple<Point, Point>> lines, int frameIndex)
+        private DirectBitmap Warp(DirectBitmap bitmap, List<Tuple<Point, Point>> lines, int frameIndex)
         {
             DirectBitmap result = new DirectBitmap(width, height);
 
@@ -158,7 +155,7 @@ namespace ImageMorpher
             return result;
         }
 
-        private DirectBitmap CrossDisolve(DirectBitmap forwardWarp, DirectBitmap backwardWarp)
+        private DirectBitmap CrossDisolve(DirectBitmap forwardWarp, DirectBitmap backwardWarp, int frameIndex)
         {
             DirectBitmap result = new DirectBitmap(width, height);
 

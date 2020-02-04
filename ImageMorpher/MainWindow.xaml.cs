@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -9,7 +10,7 @@ namespace ImageMorpher
 {
     public partial class MainWindow : Window
     {
-        private List<BitmapSource> frames = new List<BitmapSource>();
+        private BitmapSource[] frames;
         private int frameIndex = 0;
         private DispatcherTimer timer;
 
@@ -69,6 +70,7 @@ namespace ImageMorpher
             prevFrameButton.IsEnabled = isEnabled;
             animateButton.IsEnabled = isEnabled;
             numFramesSetting.IsEnabled = isEnabled;
+            numThreadsSetting.IsEnabled = isEnabled;
         }
 
         private void Source_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -83,19 +85,26 @@ namespace ImageMorpher
 
         private void sourceButton_Click(object sender, RoutedEventArgs e)
         {
-            source.SetImage();
-            destButton.IsEnabled = true;
+            if (source.SetImage() == true)
+            {
+                sourceButton.IsEnabled = false;
+                destButton.IsEnabled = true;
+            }
         }
 
         private void destButton_Click(object sender, RoutedEventArgs e)
         {
-            dest.SetImage(source.BitmapSource.PixelWidth, source.BitmapSource.PixelHeight);
-            ToggleMorphSettings(true);
+            if (dest.SetImage(source.BitmapSource.PixelWidth, source.BitmapSource.PixelHeight) == true)
+            {
+                destButton.IsEnabled = false;
+                ToggleMorphSettings(true);
+            }
         }
 
         private void morphButton_Click(object sender, RoutedEventArgs e)
         {
-            frames.Clear();
+            ToggleMorphSettings(false);
+
             frameIndex = 0;
             DirectBitmap resultBitmap = new DirectBitmap(source.DirectBitmap.Width, source.DirectBitmap.Height);
 
@@ -104,22 +113,28 @@ namespace ImageMorpher
             double p = Convert.ToDouble(pSetting.Text);
             int numFrames = Convert.ToInt32(numFramesSetting.Text);
 
+            frames = new BitmapSource[numFrames];
+
             Morpher morpher = new Morpher(source, dest, numFrames, a, b, p);
 
-            var f = morpher.NextFrame();
-            if (f != null) result.Source = f;
-           
-            while (f != null)
+            if (numFrames < 1)
+                return;
+
+            frames[0] = morpher.GenerateFrame(0);
+            result.Source = frames[0];
+
+            for (int i = 1; i < frames.Length; i++)
             {
-                frames.Add(f);
-                f = morpher.NextFrame();   
+                frames[i] = morpher.GenerateFrame(i);
             }
+
+            ToggleMorphSettings(true);
         }
 
         private void nextFrameButton_Click(object sender, RoutedEventArgs e)
         {
             Console.WriteLine(frameIndex);
-            if (frameIndex < frames.Count - 1)
+            if (frameIndex < frames.Length - 1)
             {
                 result.Source = frames[++frameIndex];
             }
@@ -140,13 +155,13 @@ namespace ImageMorpher
             ToggleMorphSettings(false);
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 33);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 66);
             timer.Start();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (++frameIndex < frames.Count)
+            if (++frameIndex < frames.Length)
             {
                 result.Source = frames[frameIndex];
                 

@@ -30,21 +30,22 @@ namespace ImageMorpher
             controlLine.End.RaiseEvent(e);
         }
 
-        public void SetImage()
+        public bool SetImage()
         {
             BitmapImage bitmapImage = ImageUtility.OpenImage();
             if (bitmapImage == null)
-                return;
+                return false;
             image.Source = bitmapImage;
             Bitmap bitmap = ImageUtility.SourceToBitmap(bitmapImage);
             DirectBitmap = new DirectBitmap(bitmap);
+            return true;
         }
 
-        public void SetImage(int width, int height)
+        public bool SetImage(int width, int height)
         {
             BitmapImage bitmapImage = ImageUtility.OpenImage();
             if (bitmapImage == null)
-                return;
+                return false;
             Bitmap bitmap = ImageUtility.SourceToBitmap(bitmapImage);
             if (bitmap.Width != width || bitmap.Height != height)
             {
@@ -52,6 +53,7 @@ namespace ImageMorpher
             }
             DirectBitmap = new DirectBitmap(bitmap);
             image.Source = DirectBitmap.BitmapSource;
+            return true;
         }
 
         public void Add(UIElement element)
