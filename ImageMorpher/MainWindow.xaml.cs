@@ -54,14 +54,6 @@ namespace ImageMorpher
             result.Source = frames[0];
         }
 
-        private void Clear()
-        {
-            source.Clear();
-            dest.Clear();
-
-            ToggleMorphSettings(false);
-        }
-
         private void ToggleMorphSettings(bool isEnabled)
         {
             morphButton.IsEnabled = isEnabled;
@@ -99,6 +91,8 @@ namespace ImageMorpher
             if (dest.SetImage(source.BitmapSource.PixelWidth, source.BitmapSource.PixelHeight) == true)
             {
                 destButton.IsEnabled = false;
+                source.CanDraw = true;
+                dest.CanDraw = true;
                 ToggleMorphSettings(true);
             }
         }
@@ -146,18 +140,11 @@ namespace ImageMorpher
             await Task.WhenAll(tasks);
 
             stopwatch.Stop();
-            benchmark.Content = stopwatch.ElapsedMilliseconds;
+            benchmark.Content = "Benchmark: " + stopwatch.ElapsedMilliseconds + "ms";
 
             Console.WriteLine("done");
             result.Source = frames[0];
             ToggleMorphSettings(true);
-        }
-
-        private BitmapSource GenerateFrame(ref Morpher morpher, int index)
-        {
-            BitmapSource frame = morpher.GenerateFrame(index);
-            frame.Freeze();
-            return frame;
         }
 
         private void nextFrameButton_Click(object sender, RoutedEventArgs e)
@@ -199,6 +186,22 @@ namespace ImageMorpher
                 timer.Stop();
                 ToggleMorphSettings(true);
             }         
+        }
+
+        private void clear_Click(object sender, RoutedEventArgs e)
+        {
+            source.Clear();
+            dest.Clear();
+            source.CanDraw = false;
+            dest.CanDraw = false;
+            source.image.Source = null;
+            dest.image.Source = null;
+            result.Source = null;
+            sourceButton.IsEnabled = true;
+            destButton.IsEnabled = false;
+            frameIndex = 0;
+
+            ToggleMorphSettings(false);
         }
     }
 }

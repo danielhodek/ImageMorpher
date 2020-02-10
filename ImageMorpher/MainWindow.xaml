@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageMorpher"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800">
-    <DockPanel>
-        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True">
-            <Button Content="Clear"/>
+        Title="MainWindow" Height="1200" Width="1000">
+    <DockPanel Background="LightGray">
+        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Background="LightGray">
+            <Button x:Name="clear" Content="Clear" Click="clear_Click"/>
         </ToolBar>
         <Grid x:Name="mainGrid" DockPanel.Dock="Bottom">
             <Grid.RowDefinitions>
@@ -20,23 +20,61 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="sourceButton" Content="Select Source" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="sourceButton_Click"/>
-            <Button x:Name="destButton" Content="Select Destination" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Click="destButton_Click" IsEnabled="False"/>
-            <StackPanel Grid.Row="1" Grid.Column="2">
-                <TextBox x:Name="aSetting" Text="0.01"/>
-                <TextBox x:Name="bSetting" Text="1"/>
-                <TextBox x:Name="pSetting" Text="0"/>
-                <TextBox x:Name="numFramesSetting" Text="9"/>
-                <TextBox x:Name="numThreadsSetting" Text="1"/>
-                <Button x:Name="morphButton" Content="Morph" Click="morphButton_Click"/>
-                <Button x:Name="nextFrameButton" Content="Next Frame" Click="nextFrameButton_Click"/>
-                <Button x:Name="prevFrameButton" Content="Previous Frame" Click="prevFrameButton_Click"/>
-                <Button x:Name="animateButton" Content="Animate" Click="animateButton_Click"/>
-                <Label x:Name="benchmark" Content="Benchmark"/> 
+
+            <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Margin="20,0">
+                <Label Content="Settings" HorizontalAlignment="Left" FontSize="20" Margin="0,10,0,0"/>
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" FontSize="18">a value:</Label>
+                    <TextBox x:Name="aSetting" Grid.Column="1" Margin="5" Text="0.01" Grid.ColumnSpan="2" FontSize="18"/>
+                    <Label Grid.Row="1" FontSize="18">b value:</Label>
+                    <TextBox x:Name="bSetting" Grid.Row="1" Grid.Column="1" Margin="5" Text="1" Grid.ColumnSpan="2" FontSize="18"/>
+                    <Label Grid.Row="2" FontSize="18">p value:</Label>
+                    <TextBox x:Name="pSetting" Grid.Row="2" Grid.Column="1" Margin="5" Text="0" Grid.ColumnSpan="2" FontSize="18"/>
+                    <Label Grid.Row="3" FontSize="18"># of frames:</Label>
+                    <TextBox x:Name="numFramesSetting" Grid.Row="3" Grid.Column="1" Margin="5" Text="30" Grid.ColumnSpan="2" FontSize="18"/>
+                    <Label Grid.Row="4" FontSize="18"># of threads:</Label>
+                    <TextBox x:Name="numThreadsSetting" Grid.Row="4" Grid.Column="1" Margin="5" Text="4" Grid.ColumnSpan="2" FontSize="18"/>
+                </Grid>
             </StackPanel>
-            <local:ControlLineCanvas x:Name="source" VerticalAlignment="Center"/>
-            <local:ControlLineCanvas x:Name="dest" Grid.Column="1" VerticalAlignment="Center"/>
-            <Image Name="result" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="20,20,20,0">
+                <Button x:Name="sourceButton" Padding="5" Margin="0,0,0,10" Content="Select Source Image" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="Auto" Click="sourceButton_Click" FontSize="20"/>
+                <Button x:Name="destButton" Padding="5" Margin="0,0,0,10" Content="Select Destination Image" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="Auto" Click="destButton_Click" IsEnabled="False" FontSize="20"/>
+                <Button x:Name="morphButton" Padding="5" Margin="0,0,0,10" Content="Morph" Click="morphButton_Click" Grid.ColumnSpan="2" FontSize="20" IsEnabled="False"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" Margin="20,20,20,0">
+                <Button x:Name="animateButton" Padding="5" Margin="0,0,0,10" Grid.Column="1" Content="Animate" Click="animateButton_Click" FontSize="20"/>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="prevFrameButton" Padding="5" Grid.Column="0" Content="Prev. Frame" Click="prevFrameButton_Click" FontSize="20"/>
+                    <Button x:Name="nextFrameButton" Padding="5" Grid.Column="2" Content="Next Frame" Click="nextFrameButton_Click" FontSize="20"/>
+                </Grid>
+                <Label x:Name="benchmark" Padding="5" Grid.Column="2" Content="Benchmark: " VerticalAlignment="Center" FontSize="20" Background="#FFE4E4E4" BorderBrush="#FF2E2E2E"/>
+            </StackPanel>
+            <Grid Background="Gray">
+                <local:ControlLineCanvas x:Name="source"/>
+            </Grid>
+            <Grid Background="Gray" Grid.Column="1">
+                <local:ControlLineCanvas x:Name="dest" Grid.Column="1"/>
+            </Grid>
+            <Grid Background="Gray" Grid.Column="2">
+                <Image x:Name="result" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>

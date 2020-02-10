@@ -14,6 +14,7 @@ namespace ImageMorpher
         public bool IsDrawing { get; set; } = false;
         public DirectBitmap DirectBitmap { get; private set; }
         public BitmapSource BitmapSource { get { return (BitmapSource)image.Source; } }
+        public bool CanDraw { get; set; } = false;
 
         public ControlLineCanvas()
         {
@@ -22,6 +23,9 @@ namespace ImageMorpher
 
         private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!CanDraw)
+                return;
+
             Point mousePos = e.GetPosition(canvas);
             var controlLine = new ControlLine(this, mousePos.X, mousePos.Y);
             IsDrawing = true;
