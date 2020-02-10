@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -101,7 +103,7 @@ namespace ImageMorpher
             }
         }
 
-        private void morphButton_Click(object sender, RoutedEventArgs e)
+        private async void morphButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleMorphSettings(false);
 
@@ -112,23 +114,50 @@ namespace ImageMorpher
             double b = Convert.ToDouble(bSetting.Text);
             double p = Convert.ToDouble(pSetting.Text);
             int numFrames = Convert.ToInt32(numFramesSetting.Text);
+            int numFramesLeft = numFrames;
+            int numThreads = Convert.ToInt32(numThreadsSetting.Text);
 
             frames = new BitmapSource[numFrames];
+            Task[] tasks = new Task[numThreads];
 
             Morpher morpher = new Morpher(source, dest, numFrames, a, b, p);
 
             if (numFrames < 1)
                 return;
 
-            frames[0] = morpher.GenerateFrame(0);
-            result.Source = frames[0];
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
-            for (int i = 1; i < frames.Length; i++)
+            for (int i = 0; i < numThreads; i++)
             {
-                frames[i] = morpher.GenerateFrame(i);
+                int numThreadFrames = (i < numThreads - 1) ? (numFramesLeft / numThreads) : numFramesLeft;
+                int begin = numFrames - numFramesLeft;
+                tasks[i] = Task.Run(() =>
+                {
+                    for (int j = begin; j < begin + numThreadFrames; j++)
+                    {
+                        BitmapSource frame = morpher.GenerateFrame(j);
+                        frame.Freeze();
+                        frames[j] = frame;
+                    }
+                });
+                numFramesLeft -= numThreadFrames;
             }
 
+            await Task.WhenAll(tasks);
+
+            stopwatch.Stop();
+            benchmark.Content = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("done");
+            result.Source = frames[0];
             ToggleMorphSettings(true);
+        }
+
+        private BitmapSource GenerateFrame(ref Morpher morpher, int index)
+        {
+            BitmapSource frame = morpher.GenerateFrame(index);
+            frame.Freeze();
+            return frame;
         }
 
         private void nextFrameButton_Click(object sender, RoutedEventArgs e)
@@ -155,7 +184,7 @@ namespace ImageMorpher
             ToggleMorphSettings(false);
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 66);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 33);
             timer.Start();
         }
 
@@ -163,9 +192,9 @@ namespace ImageMorpher
         {
             if (++frameIndex < frames.Length)
             {
-                result.Source = frames[frameIndex];
-                
-            } else
+                result.Source = frames[frameIndex];    
+            } 
+            else
             {
                 timer.Stop();
                 ToggleMorphSettings(true);

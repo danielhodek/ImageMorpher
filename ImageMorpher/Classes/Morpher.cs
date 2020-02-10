@@ -35,6 +35,7 @@ namespace ImageMorpher
             width = sourceCanvas.BitmapSource.PixelWidth;
             height = sourceCanvas.BitmapSource.PixelHeight;
         }
+
         public BitmapSource GenerateFrame(int frameIndex)
         {
             if (frameIndex == 0)

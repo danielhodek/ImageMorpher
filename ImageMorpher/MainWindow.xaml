@@ -32,6 +32,7 @@
                 <Button x:Name="nextFrameButton" Content="Next Frame" Click="nextFrameButton_Click"/>
                 <Button x:Name="prevFrameButton" Content="Previous Frame" Click="prevFrameButton_Click"/>
                 <Button x:Name="animateButton" Content="Animate" Click="animateButton_Click"/>
+                <Label x:Name="benchmark" Content="Benchmark"/> 
             </StackPanel>
             <local:ControlLineCanvas x:Name="source" VerticalAlignment="Center"/>
             <local:ControlLineCanvas x:Name="dest" Grid.Column="1" VerticalAlignment="Center"/>
